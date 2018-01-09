@@ -10,7 +10,7 @@
 -author("maksymilian").
 
 %% API
--export([run/3]).
+-export([run/3, createProducers/1, createConsumers/1]).
 
 run(NumOfProd, NumOfCons, BufferSize) ->
   start_buffer(BufferSize),
@@ -35,6 +35,7 @@ createConsumers(NumOfCons) ->
 buffer([H|T], MaxN) ->
   receive
     {add, Value, Pid} ->
+%%      io:format("got add request~n"),
       Pid ! ok,
       if
         length([H|T]) + 1 == MaxN -> full_buffer([H|T] ++ [Value]);
@@ -42,6 +43,7 @@ buffer([H|T], MaxN) ->
       end;
 
     {get, Pid} ->
+%%      io:format("got get request~n"),
       Pid ! H,
       if
         length(T) == 0 -> empty_buffer(MaxN);
@@ -77,6 +79,9 @@ consumer() ->
   receive
     Value -> io:format("consuming ~w~n", [Value]),
       consumer()
+%%  after
+%%    2000 -> io:format("waited 2 sec!~n"),
+      consumer()
   end.
 
 producer() ->
@@ -85,5 +90,8 @@ producer() ->
   buffer ! {add, Value, self()},
   receive
     ok -> io:format("produced ~w~n", [Value]),
+      producer()
+%%  after
+%%    2000 -> io:format("waited 2 sec!~n"),
       producer()
   end.
