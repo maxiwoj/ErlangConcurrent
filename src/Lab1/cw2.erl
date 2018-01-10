@@ -81,7 +81,7 @@ consumer() ->
       consumer()
 %%  after
 %%    2000 -> io:format("waited 2 sec!~n"),
-      consumer()
+%%      consumer()
   end.
 
 producer() ->
@@ -93,5 +93,5 @@ producer() ->
       producer()
 %%  after
 %%    2000 -> io:format("waited 2 sec!~n"),
-      producer()
+%%      producer()
   end.

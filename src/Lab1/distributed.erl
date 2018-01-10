@@ -4,14 +4,13 @@
 %%% @doc
 %%%
 %%% @end
-%%% Created : 08. Jan 2018 18:06
+%%% Created : 10. Jan 2018 20:12
 %%%-------------------------------------------------------------------
--module(distributedBuffor).
+-module(distributed).
 -author("maksymilian").
 
 %% API
 -export([run/5]).
-
 
 run(NumOfProd, NumOfCons, NumOfBuffers, SingleBufferSize, ResourcesRange) ->
   BufferIds = createBuffers(NumOfBuffers, SingleBufferSize, #{}),
@@ -65,7 +64,7 @@ producer(BufferPids, ResourcesRange) ->
 
 resourceHash(NumOfBuffers, ResourcesRange, Value) ->
   ValuesPerBuffer = (ResourcesRange div NumOfBuffers) + 1,
-  ResourcesRange div ValuesPerBuffer.
+  Value div ValuesPerBuffer.
 
 
 createBuffers(0, _, BufferMap) -> BufferMap;
@@ -105,3 +104,4 @@ empty_buffer(MaxN) ->
       Pid ! ok,
       buffer([Value], MaxN)
   end.
+
